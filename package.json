@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "rollup": "^0.58.1",
+    "rollup-plugin-svelte": "^4.1.0",
+    "svelte": "^2.1.1"
+  }
+  ,"scripts": {"build": "rollup -c", "run": "pipenv run gunicorn -w 8 -k gthread thing:app -b 127.0.0.1:55037"}
+}
