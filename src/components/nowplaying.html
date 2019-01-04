@@ -14,9 +14,11 @@
     grid-template: "cover title" 1fr
                    "cover artist" auto /
                    auto   1fr;
-    width: 40rem;
+    width: 100%;
     overflow: hidden;
-    position: relative;
+    position: absolute;
+    bottom: 0;
+    left: 0;
 }
 .cover-container {
     height: 8rem;
@@ -66,11 +68,11 @@ h2 {
     export default {
         oncreate(){
             this.set({'playing': false});
-            this.event_source = new EventSource('/stream');
+            this.event_source = new EventSource('/api/mpd/stream');
             this.event_source.addEventListener('player',
                 e => this.load(JSON.parse(e.data)));
 
-            fetch('/playing').then(resp=>resp.json()).then(this.load.bind(this));
+            fetch('/api/mpd/playing').then(resp=>resp.json()).then(this.load.bind(this));
         },
         ondestroy(){
             this.event_source.close();
@@ -100,7 +102,7 @@ h2 {
                 this.set({
                     title: playing.title,
                     artist: playing.artist,
-                    cover: '/cover?cachebust=' + playing.id,
+                    cover: '/api/mpd/cover?cachebust=' + playing.id,
                     playing: playing.state == "play"
                 });
             }

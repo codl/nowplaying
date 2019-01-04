@@ -1,10 +1,13 @@
 <!doctype html>
 <html>
     <head>
-        <script src="/static/main.js" async></script>
-        <link rel='stylesheet' href='/static/styles.css'/>
     </head>
     <body>
+        <ul>
+        {% for element in elements %}
+        <li><a href="/elements/{{element}}">{{element}}</a></li>
+        {% endfor %}
 
+        </ul>
     </body>
 </html>

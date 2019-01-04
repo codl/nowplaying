@@ -1,10 +1,11 @@
 import svelte from 'rollup-plugin-svelte';
+import glob from 'glob';
 
 export default {
-    input: 'src/main.js',
+    input: glob.sync('src/elements/*.js'),
     output: {
         format: 'iife',
-        file: 'static/main.js',
+        dir: 'static',
     },
     plugins: [
         svelte({
