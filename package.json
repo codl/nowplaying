@@ -3,8 +3,8 @@
     "concurrently": "",
     "glob": "",
     "rollup": "",
-    "rollup-plugin-svelte": "",
-    "svelte": ""
+    "rollup-plugin-svelte": "5.x",
+    "svelte": "2.x"
   },
   "scripts": {
     "build": "rollup -c",
