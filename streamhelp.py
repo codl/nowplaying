@@ -7,7 +7,7 @@ import re
 import json
 import socket
 
-MUSIC_FOLDER = '/home/codl/media/music'
+MUSIC_FOLDER = '/array/media/music'
 app = Flask('streamhelp')
 
 local = threading.local()
