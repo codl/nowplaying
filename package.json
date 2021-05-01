@@ -4,7 +4,7 @@
     "glob": "",
     "rollup": "",
     "rollup-plugin-svelte": "5.x",
-    "svelte": "2.x"
+    "svelte": "3.x"
   },
   "scripts": {
     "build": "rollup -c",
