@@ -3,7 +3,7 @@
     "concurrently": "",
     "glob": "",
     "rollup": "",
-    "rollup-plugin-svelte": "5.x",
+    "rollup-plugin-svelte": "6.x",
     "svelte": "3.x"
   },
   "scripts": {
