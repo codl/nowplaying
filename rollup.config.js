@@ -1,4 +1,5 @@
 import svelte from 'rollup-plugin-svelte';
+import { nodeResolve } from '@rollup/plugin-node-resolve';
 import glob from 'glob';
 
 export default {
@@ -8,6 +9,9 @@ export default {
         dir: 'static',
     },
     plugins: [
+        nodeResolve({
+            browser: true,
+        }),
         svelte({
             //include: 'components/**/*.html',
         }),

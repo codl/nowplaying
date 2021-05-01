@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@rollup/plugin-node-resolve": "^11.2.1",
     "concurrently": "",
     "glob": "",
     "rollup": "",

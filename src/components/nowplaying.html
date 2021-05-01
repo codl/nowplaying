@@ -1,10 +1,10 @@
-<div ref:this class='now-playing'>
+<div bind:this={all_el} class='now-playing'>
     {#if playing}
     <div class="cover-container">
         <img src={cover} alt='' />
     </div>
-    <h1 ref:title>{title}</h1>
-    <h2 ref:artist>{artist}</h2>
+    <h1 bind:this={title_el}>{title}</h1>
+    <h2 bind:this={artist_el}>{artist}</h2>
     {/if}
 </div>
 
@@ -56,56 +56,41 @@ h2 {
 </style>
 
 <script>
-
-    function fit(outer_bounds, inner_bounds){
-        if(inner_bounds.right > outer_bounds.right){
-            let factor = (outer_bounds.right - inner_bounds.left) / (inner_bounds.right - inner_bounds.left);
-            return `scalex(${factor})`;
-        }
-        return '';
+function fit(outer_bounds, inner_bounds){
+    if(inner_bounds.right > outer_bounds.right){
+        let factor = (outer_bounds.right - inner_bounds.left) / (inner_bounds.right - inner_bounds.left);
+        return `scalex(${factor})`;
     }
+    return '';
+}
 
-    export default {
-        oncreate(){
-            this.set({'playing': false});
-            this.event_source = new EventSource('/api/mpd/stream');
-            this.event_source.addEventListener('player',
-                e => this.load(JSON.parse(e.data)));
+let title, artist, cover, playing;
+let title_el, artist_el, all_el;
 
-            fetch('/api/mpd/playing').then(resp=>resp.json()).then(this.load.bind(this));
-        },
-        ondestroy(){
-            this.event_source.close();
-        },
-        onupdate(_){
-            const title = this.refs.title;
-            const artist = this.refs.artist;
-            const all = this.refs.this;
-            if(!title || !artist){
-                return;
-            }
-            title.style.transform = '';
-            artist.style.transform = '';
+function load(state){
+    console.log(state);
+    title = state.title;
+    artist= state.artist;
+    cover= '/api/mpd/cover?cachebust=' + state.id;
+    playing= state.state == "play";
+}
 
-            const title_bounds = title.getBoundingClientRect();
-            const artist_bounds = artist.getBoundingClientRect();
-            const all_bounds = all.getBoundingClientRect();
+playing = false;
+let event_source = new EventSource('/api/mpd/stream');
+event_source.addEventListener('player',
+    e => load(JSON.parse(e.data)));
 
-            title.style.transform = fit(all_bounds, title_bounds);
-            artist.style.transform = fit(all_bounds, artist_bounds);
+fetch('/api/mpd/playing').then(resp=>resp.json()).then(load);
 
+import { afterUpdate } from 'svelte';
+afterUpdate(() => {
+    if(playing) {
+        const title_bounds = title_el.getBoundingClientRect();
+        const artist_bounds = artist_el.getBoundingClientRect();
+        const all_bounds = all_el.getBoundingClientRect();
 
-        },
-        methods: {
-            load(playing){
-                console.log(playing);
-                this.set({
-                    title: playing.title,
-                    artist: playing.artist,
-                    cover: '/api/mpd/cover?cachebust=' + playing.id,
-                    playing: playing.state == "play"
-                });
-            }
-        }
+        title_el.style.transform = fit(all_bounds, title_bounds);
+        artist_el.style.transform = fit(all_bounds, artist_bounds);
     }
+});
 </script>
